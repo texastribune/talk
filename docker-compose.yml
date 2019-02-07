@@ -14,6 +14,8 @@ services:
       - TALK_ROOT_URL=http://127.0.0.1:3000
       - TALK_PORT=3000
       - TALK_JWT_SECRET=password
+    env_file:
+      - .env
     volumes:
       - type: bind
         source: .
