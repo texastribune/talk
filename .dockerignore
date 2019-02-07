@@ -18,3 +18,8 @@ __tests__
 
 # we won't use the .git folder in production.
 .git
+
+# built in the container:
+locales
+
+docker-compose.yml
