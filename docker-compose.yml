@@ -1,0 +1,39 @@
+version: '3.2'
+services:
+  talk:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+      - redis
+    environment:
+      - NODE_ENV=development # remove this line in production
+      - TALK_MONGO_URL=mongodb://mongo/talk
+      - TALK_REDIS_URL=redis://redis
+      - TALK_ROOT_URL=http://127.0.0.1:3000
+      - TALK_PORT=3000
+      - TALK_JWT_SECRET=password
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/src/app
+      - type: volume
+        source: node-modules
+        target: /usr/src/app/node_modules
+  mongo:
+    image: mongo:latest
+    restart: always
+    volumes:
+      - mongo:/data/db
+  redis:
+    image: redis:latest
+    restart: always
+    volumes:
+      - redis:/data
+volumes:
+  mongo:
+    external: false
+  redis:
+    external: false
+  node-modules:
