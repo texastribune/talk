@@ -6,6 +6,7 @@
     "talk-plugin-respect"
   ],
   "client": [
+    "talk-plugin-auth",
     "talk-plugin-author-menu",
     "talk-plugin-featured-comments",
     "talk-plugin-flag-details",
