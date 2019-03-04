@@ -3,7 +3,8 @@
     "tt-plugin-auth0",
     "talk-plugin-featured-comments",
     "talk-plugin-profile-data",
-    "talk-plugin-respect"
+    "talk-plugin-respect",
+    { "@coralproject/talk-plugin-custom-asset-id": "^1.1.0" }
   ],
   "client": [
     "talk-plugin-author-menu",
