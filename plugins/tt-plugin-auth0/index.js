@@ -1,6 +1,13 @@
 const Users = require("services/users");
+const { get } = require("lodash");
 
 module.exports = {
+  resolvers: {
+    User: {
+      username: user => get(user, "metadata.displayName", get(user, "username"))
+    }
+  },
+
   tokenUserNotFound: async ({ jwt, token }) => {
     if (!token) return null;
 
