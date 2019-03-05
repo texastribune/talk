@@ -15,6 +15,7 @@ module.exports = {
     const providerName = jwt.iss;
     const username = jwt.nickname;
     const emailIsVerified = jwt.email_verified;
+    const email = jwt.email.toLowerCase();
     const isStaff = jwt["https://texastribune.org/is_staff"];
 
     // you must verify your email to comment
@@ -28,9 +29,13 @@ module.exports = {
         username
       );
 
-      user.roles = [isStaff ? "STAFF" : "COMMENTER"];
-      await user.save();
+      user.roles = isStaff ? "STAFF" : "COMMENTER";
+      user.profiles.push({
+        provider: "local",
+        id: email
+      });
 
+      await user.save();
       return user;
     } catch (err) {
       return null;
