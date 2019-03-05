@@ -29,7 +29,7 @@ module.exports = {
         username
       );
 
-      user.roles = isStaff ? "STAFF" : "COMMENTER";
+      user.role = isStaff ? "STAFF" : "COMMENTER";
       user.profiles.push({
         provider: "local",
         id: email
