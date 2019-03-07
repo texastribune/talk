@@ -16,3 +16,6 @@
 :global(.talk-admin-login-sign-in > form) {
   display: none;
 }
+:global(.talk-admin-login-sign-in h5) {
+  display: none;
+}
