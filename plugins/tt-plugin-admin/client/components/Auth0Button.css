@@ -11,3 +11,8 @@
   background-color: #ffc200;
   border-color: #ffc200;
 }
+
+/* hide username + password fields */
+.talk-admin-login-sign-in > form {
+  display: none;
+}
