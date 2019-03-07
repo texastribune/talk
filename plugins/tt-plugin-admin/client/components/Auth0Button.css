@@ -13,6 +13,6 @@
 }
 
 /* hide username + password fields */
-.talk-admin-login-sign-in > form {
+:global(.talk-admin-login-sign-in > form) {
   display: none;
 }
