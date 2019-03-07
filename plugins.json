@@ -1,11 +1,13 @@
 {
   "server": [
     "tt-plugin-auth0",
+    "tt-plugin-admin",
     "talk-plugin-featured-comments",
     "talk-plugin-profile-data",
     "talk-plugin-respect"
   ],
   "client": [
+    "tt-plugin-admin",
     "talk-plugin-author-menu",
     "talk-plugin-featured-comments",
     "talk-plugin-flag-details",
