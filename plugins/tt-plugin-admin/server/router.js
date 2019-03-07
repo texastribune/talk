@@ -22,8 +22,7 @@ module.exports = router => {
       }
     } = req.context;
 
-    passport.authenticate(
-      "auth0",
+    passport.authenticate("auth0",
       {
         session: false,
         failureRedirect: "https://www.texastribune.org/"
