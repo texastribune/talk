@@ -20,15 +20,10 @@ module.exports = passport => {
           domain: process.env.AUTH0_DOMAIN,
           clientID: process.env.AUTH0_CLIENT_ID,
           clientSecret: process.env.AUTH0_CLIENT_SECRET,
-          callbackURL: `${ROOT_URL}api/v1/auth/auth0/callback`
+          callbackURL: `${ROOT_URL}api/v1/auth/auth0/callback`,
+          state: false
         },
-        async (
-          accessToken,
-          refreshToken,
-          extraParams,
-          profile,
-          done
-        ) => {
+        async (accessToken, refreshToken, extraParams, profile, done) => {
           let user;
           try {
             const userId = profile.sub;
@@ -36,8 +31,7 @@ module.exports = passport => {
             const username = profile.nickname;
             const emailIsVerified = profile.email_verified;
             const email = profile.email.toLowerCase();
-            const isStaff =
-              profile["https://texastribune.org/is_staff"];
+            const isStaff = profile["https://texastribune.org/is_staff"];
 
             if (!emailIsVerified) throw new Error("Email not verified");
 
