@@ -16,7 +16,6 @@ module.exports = {
     const username = jwt.nickname;
     const emailIsVerified = jwt.email_verified;
     const email = jwt.email.toLowerCase();
-    const isStaff = jwt["https://texastribune.org/is_staff"];
 
     // you must verify your email to comment
     if (!emailIsVerified) return null;
