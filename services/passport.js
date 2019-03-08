@@ -111,7 +111,6 @@ const authPopupCallbackCSP = (() =>
  * Returns the response to the login attempt via a popup callback with some JS.
  */
 const HandleAuthPopupCallback = (req, res, next) => (err, user) => {
-  console.log('popup', user);
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
   res.header('Expires', '-1');
   res.header('Pragma', 'no-cache');
@@ -126,12 +125,14 @@ const HandleAuthPopupCallback = (req, res, next) => (err, user) => {
   res.locals.encodeJSONForHTML = encodeJSONForHTML;
 
   if (err) {
+    console.log("err exists", err);
     return res.render('auth-callback.njk', {
       auth: { err, data: null },
     });
   }
 
   if (!user) {
+    console.log("user does not exist");
     return res.render('auth-callback.njk', {
       auth: { err: new ErrNotAuthorized(), data: null },
     });
