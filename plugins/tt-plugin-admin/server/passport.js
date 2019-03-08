@@ -27,12 +27,12 @@ module.exports = passport => {
           let user;
           console.log('passport', profile);
           try {
-            const userId = profile.sub;
-            const providerName = profile.iss;
-            const username = profile.nickname;
-            const emailIsVerified = profile.email_verified;
-            const email = profile.email.toLowerCase();
-            const isStaff = profile["https://texastribune.org/is_staff"];
+            const userId = profile._json.sub;
+            // why isn't this in `profile`?
+            const providerName = process.env.TALK_JWT_ISSUER;
+            const username = profile._json.nickname;
+            const emailIsVerified = profile._json.email_verified;
+            const email = profile._json.email.toLowerCase();
 
             if (!emailIsVerified) throw new Error("Email not verified");
 
@@ -42,7 +42,6 @@ module.exports = passport => {
               providerName,
               username
             );
-            user.role = isStaff ? "STAFF" : "COMMENTER";
             user.profiles.push({
               provider: "local",
               id: email
