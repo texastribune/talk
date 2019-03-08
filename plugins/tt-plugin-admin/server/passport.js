@@ -25,7 +25,6 @@ module.exports = passport => {
         },
         async (accessToken, refreshToken, extraParams, profile, done) => {
           let user;
-          console.log('passport', profile);
           try {
             const userId = profile._json.sub;
             // why isn't this in `profile`?

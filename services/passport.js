@@ -125,14 +125,12 @@ const HandleAuthPopupCallback = (req, res, next) => (err, user) => {
   res.locals.encodeJSONForHTML = encodeJSONForHTML;
 
   if (err) {
-    console.log("err exists", err);
     return res.render('auth-callback.njk', {
       auth: { err, data: null },
     });
   }
 
   if (!user) {
-    console.log("user does not exist");
     return res.render('auth-callback.njk', {
       auth: { err: new ErrNotAuthorized(), data: null },
     });
@@ -144,7 +142,6 @@ const HandleAuthPopupCallback = (req, res, next) => (err, user) => {
   SetTokenForSafari(req, res, token);
 
   // We logged in the user! Let's send back the user data.
-  console.log("user does exist!");
   res.render('auth-callback.njk', {
     auth: { err: null, data: { user, token } },
   });
