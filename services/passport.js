@@ -144,6 +144,7 @@ const HandleAuthPopupCallback = (req, res, next) => (err, user) => {
   SetTokenForSafari(req, res, token);
 
   // We logged in the user! Let's send back the user data.
+  console.log("user does exist!");
   res.render('auth-callback.njk', {
     auth: { err: null, data: { user, token } },
   });
