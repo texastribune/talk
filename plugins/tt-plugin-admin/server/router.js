@@ -9,7 +9,8 @@ module.exports = router => {
     } = req.context;
 
     return passport.authenticate("auth0", {
-      connection: "texastribune-org"
+      connection: "texastribune-org",
+      scope: "openid profile email"
     })(req, res, next);
   });
 
