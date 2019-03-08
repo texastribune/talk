@@ -29,7 +29,6 @@ module.exports = {
         username
       );
 
-      user.role = isStaff ? "STAFF" : "COMMENTER";
       user.profiles.push({
         provider: "local",
         id: email
