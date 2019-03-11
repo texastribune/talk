@@ -7,6 +7,13 @@ if (ROOT_URL[ROOT_URL.length - 1] !== "/") {
   ROOT_URL += "/";
 }
 
+const hasLocalProfile = profiles => {
+  const profilesWithLocal = profiles.filter(
+    profile => profile.provider === "local"
+  );
+  return profilesWithLocal.length > 0;
+};
+
 module.exports = passport => {
   if (
     process.env.AUTH0_DOMAIN &&
@@ -41,10 +48,14 @@ module.exports = passport => {
               providerName,
               username
             );
-            user.profiles.push({
-              provider: "local",
-              id: email
-            });
+
+            if (!hasLocalProfile(user.profiles)) {
+              user.profiles.push({
+                provider: "local",
+                id: email
+              });
+            }
+
             await user.save();
           } catch (err) {
             return done(err);
