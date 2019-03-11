@@ -33,10 +33,10 @@ module.exports = passport => {
         async (accessToken, refreshToken, extraParams, profile, done) => {
           let user;
           try {
-            console.log(profile);
             const userId = profile._json.sub;
             // why isn't this in `profile`?
-            const providerName = process.env.TALK_JWT_ISSUER;
+            const providerName =
+              "https://auth-test.texastribune.org/";
             const username = profile._json.nickname;
             const emailIsVerified = profile._json.email_verified;
             const email = profile._json.email.toLowerCase();
