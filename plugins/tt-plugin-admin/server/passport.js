@@ -33,7 +33,6 @@ module.exports = passport => {
         async (accessToken, refreshToken, extraParams, profile, done) => {
           let user;
           try {
-            console.log(extraParams);
             const userId = profile._json.sub;
             // why isn't this in `profile`?
             const providerName = process.env.TALK_JWT_ISSUER;
