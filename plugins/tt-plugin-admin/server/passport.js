@@ -40,6 +40,8 @@ module.exports = passport => {
             const username = profile._json.nickname;
             const emailIsVerified = profile._json.email_verified;
             const email = profile._json.email.toLowerCase();
+            const isStaff =
+              profile._json["https://texastribune.org/is_staff"];
 
             if (!emailIsVerified) throw new Error("Email not verified");
 
@@ -55,6 +57,10 @@ module.exports = passport => {
                 provider: "local",
                 id: email
               });
+            }
+
+            if (user.role === "COMMENTER" && isStaff) {
+              user.role = "STAFF";
             }
 
             await user.save();
