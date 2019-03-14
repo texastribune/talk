@@ -48,7 +48,7 @@ module.exports = passport => {
               profile._json["https://texastribune.org/is_staff"];
 
             user = await new Promise((resolve, reject) => {
-              jwt.verify(extraParams.id_token, cert, (err, decoded) => {
+              jwt.verify(extraParams.id_token, cert, async (err, decoded) => {
                 if (err) {
                   return reject(new Error("Error verifying the Auth0 JWT"));
                 }
