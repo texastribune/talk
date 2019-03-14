@@ -1,4 +1,4 @@
-const jwt = require("jwt");
+const jwt = require("jsonwebtoken");
 
 const Auth0Strategy = require("passport-auth0");
 const UsersService = require("services/users");
