@@ -42,51 +42,37 @@ module.exports = passport => {
               throw new Error("Email not verified");
             }
 
-            const cert = JSON.parse(process.env.TALK_JWT_SECRETS)[1].public;
             const userId = profile._json.sub;
             const username = profile._json.nickname;
             const email = profile._json.email.toLowerCase();
-            const isStaff =
-              profile._json["https://texastribune.org/is_staff"];
+            const isStaff = profile._json["https://texastribune.org/is_staff"];
 
-            user = await new Promise((resolve, reject) => {
-              jwt.verify(extraParams.id_token, cert, async (err, decoded) => {
-                if (err) {
-                  console.log(err);
-                  return reject(new Error("Error verifying the Auth0 JWT"));
-                }
+            const { iss: providerName } = jwt.decode(extraParams.id_token);
 
-                console.log(decoded);
-                const { iss: providerName } = decoded;
+            user = await UsersService.upsertExternalUser(
+              null,
+              userId,
+              providerName,
+              username
+            );
 
-                user = await UsersService.upsertExternalUser(
-                  null,
-                  userId,
-                  providerName,
-                  username
-                );
-
-                if (!hasLocalProfile(user.profiles)) {
-                  user.profiles.push({
-                    provider: "local",
-                    id: email
-                  });
-                }
-
-                if (user.role === "COMMENTER" && isStaff) {
-                  user.role = "STAFF";
-                }
-
-                await user.save();
-                return resolve(user);
+            if (!hasLocalProfile(user.profiles)) {
+              user.profiles.push({
+                provider: "local",
+                id: email
               });
-            });
+            }
 
-            return ValidateUserLogin(profile, user, done);
+            if (user.role === "COMMENTER" && isStaff) {
+              user.role = "STAFF";
+            }
+
+            await user.save();
           } catch (err) {
-            console.log(err);
             return done(err);
           }
+
+          return ValidateUserLogin(profile, user, done);
         }
       )
     );
@@ -96,4 +82,3 @@ module.exports = passport => {
     );
   }
 };
-
