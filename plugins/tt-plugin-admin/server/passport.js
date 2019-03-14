@@ -52,6 +52,7 @@ module.exports = passport => {
             user = await new Promise((resolve, reject) => {
               jwt.verify(extraParams.id_token, cert, async (err, decoded) => {
                 if (err) {
+                  console.log(err);
                   return reject(new Error("Error verifying the Auth0 JWT"));
                 }
 
