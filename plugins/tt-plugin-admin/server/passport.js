@@ -1,3 +1,5 @@
+const jwt = require("jwt");
+
 const Auth0Strategy = require("passport-auth0");
 const UsersService = require("services/users");
 const { ValidateUserLogin } = require("services/passport");
