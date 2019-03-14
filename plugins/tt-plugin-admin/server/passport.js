@@ -33,38 +33,46 @@ module.exports = passport => {
         async (accessToken, refreshToken, extraParams, profile, done) => {
           let user;
           try {
-            const userId = profile._json.sub;
-            // why isn't this in `profile`?
-            const providerName =
-              "https://auth-test.texastribune.org/";
-            const username = profile._json.nickname;
             const emailIsVerified = profile._json.email_verified;
+
+            if (!emailIsVerified) {
+              throw new Error("Email not verified");
+            }
+
+            const cert = JSON.parse(process.env.TALK_JWT_SECRETS)[1].public;
+            const userId = profile._json.sub;
+            const username = profile._json.nickname;
             const email = profile._json.email.toLowerCase();
             const isStaff =
               profile._json["https://texastribune.org/is_staff"];
 
-            if (!emailIsVerified) throw new Error("Email not verified");
+            jwt.verify(extraParams.id_token, cert, (err, decoded) => {
+              if (err) throw new Error("Error verifying the Auth0 JWT");
+              console.log(decoded);
+              const { iss: providerName } = decoded;
 
-            user = await UsersService.upsertExternalUser(
-              null,
-              userId,
-              providerName,
-              username
-            );
+              user = await UsersService.upsertExternalUser(
+                null,
+                userId,
+                providerName,
+                username
+              );
 
-            if (!hasLocalProfile(user.profiles)) {
-              user.profiles.push({
-                provider: "local",
-                id: email
-              });
-            }
+              if (!hasLocalProfile(user.profiles)) {
+                user.profiles.push({
+                  provider: "local",
+                  id: email
+                });
+              }
 
-            if (user.role === "COMMENTER" && isStaff) {
-              user.role = "STAFF";
-            }
+              if (user.role === "COMMENTER" && isStaff) {
+                user.role = "STAFF";
+              }
 
-            await user.save();
+              await user.save();
+            });
           } catch (err) {
+            console.log(err);
             return done(err);
           }
 
