@@ -32,6 +32,7 @@ module.exports = passport => {
         },
         async (accessToken, refreshToken, extraParams, profile, done) => {
           let user;
+
           try {
             const emailIsVerified = profile._json.email_verified;
 
@@ -46,37 +47,43 @@ module.exports = passport => {
             const isStaff =
               profile._json["https://texastribune.org/is_staff"];
 
-            jwt.verify(extraParams.id_token, cert, (err, decoded) => {
-              if (err) throw new Error("Error verifying the Auth0 JWT");
-              console.log(decoded);
-              const { iss: providerName } = decoded;
+            user = await new Promise((resolve, reject) => {
+              jwt.verify(extraParams.id_token, cert, (err, decoded) => {
+                if (err) {
+                  return reject(new Error("Error verifying the Auth0 JWT"));
+                }
 
-              user = await UsersService.upsertExternalUser(
-                null,
-                userId,
-                providerName,
-                username
-              );
+                console.log(decoded);
+                const { iss: providerName } = decoded;
 
-              if (!hasLocalProfile(user.profiles)) {
-                user.profiles.push({
-                  provider: "local",
-                  id: email
-                });
-              }
+                user = await UsersService.upsertExternalUser(
+                  null,
+                  userId,
+                  providerName,
+                  username
+                );
 
-              if (user.role === "COMMENTER" && isStaff) {
-                user.role = "STAFF";
-              }
+                if (!hasLocalProfile(user.profiles)) {
+                  user.profiles.push({
+                    provider: "local",
+                    id: email
+                  });
+                }
 
-              await user.save();
+                if (user.role === "COMMENTER" && isStaff) {
+                  user.role = "STAFF";
+                }
+
+                await user.save();
+                return resolve(user);
+              });
             });
+
+            return ValidateUserLogin(profile, user, done);
           } catch (err) {
             console.log(err);
             return done(err);
           }
-
-          return ValidateUserLogin(profile, user, done);
         }
       )
     );
