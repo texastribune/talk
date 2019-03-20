@@ -1,19 +1,12 @@
 const Users = require("services/users");
 const { get } = require("lodash");
 
-const isAtLeastStaff = role => (
-  role === 'STAFF' || role === 'ADMIN' || role === 'MODERATOR'
-);
-
 module.exports = {
   resolvers: {
     User: {
       username(user) {
         const fullName = get(user, "metadata.fullName");
-
-        if (fullName && isAtLeastStaff(user.role)) {
-          return fullName;
-        }
+        if (fullName) return fullName;
         return get(user, "metadata.displayName", get(user, "username"));
       }
     }
