@@ -4,7 +4,11 @@ const { get } = require("lodash");
 module.exports = {
   resolvers: {
     User: {
-      username: user => get(user, "metadata.displayName", get(user, "username"))
+      username(user) {
+        const fullName = get(user, "metadata.fullName");
+        if (fullName) return fullName;
+        return get(user, "metadata.displayName", get(user, "username"));
+      }
     }
   },
 
@@ -14,6 +18,8 @@ module.exports = {
     const userId = jwt.sub;
     const providerName = jwt.iss;
     const username = jwt.nickname;
+    const firstName = jwt.given_name;
+    const lastName = jwt.family_name;
     const emailIsVerified = jwt.email_verified;
     const email = jwt.email.toLowerCase();
     const isStaff = jwt["https://texastribune.org/is_staff"];
@@ -29,6 +35,9 @@ module.exports = {
         username
       );
 
+      if (firstName && lastName) {
+        user.metadata.fullName = `${firstName} ${lastName}`;
+      }
       user.role = isStaff ? "STAFF" : "COMMENTER";
       user.profiles.push({
         provider: "local",
