@@ -27,6 +27,8 @@ module.exports = {
     // you must verify your email to comment
     if (!emailIsVerified) return null;
 
+    console.log('NAMES', firstName, lastName);
+
     try {
       const user = await Users.upsertExternalUser(
         null,
