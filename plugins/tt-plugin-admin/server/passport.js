@@ -44,6 +44,8 @@ module.exports = passport => {
 
             const userId = profile._json.sub;
             const username = profile._json.nickname;
+            const firstName = profile._json.given_name;
+            const lastName = profile._json.family_name;
             const email = profile._json.email.toLowerCase();
             const isStaff = profile._json["https://texastribune.org/is_staff"];
 
@@ -55,6 +57,13 @@ module.exports = passport => {
               providerName,
               username
             );
+
+            if (firstName && lastName) {
+              user.metadata.fullName = `${firstName} ${lastName}`;
+            }
+            if ((!firstName || !lastName) && user.metadata.fullName) {
+              delete user.metadata.fullName;
+            }
 
             if (!hasLocalProfile(user.profiles)) {
               user.profiles.push({
