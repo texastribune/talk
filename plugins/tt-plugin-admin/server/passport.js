@@ -1,8 +1,10 @@
 const jwt = require("jsonwebtoken");
-
 const Auth0Strategy = require("passport-auth0");
+
 const UsersService = require("services/users");
+const MetadataService = require("services/metadata");
 const { ValidateUserLogin } = require("services/passport");
+const UserModel = require("models/user");
 let { ROOT_URL } = require("config");
 
 if (ROOT_URL[ROOT_URL.length - 1] !== "/") {
@@ -59,10 +61,15 @@ module.exports = passport => {
             );
 
             if (firstName && lastName) {
-              user.metadata.fullName = `${firstName} ${lastName}`;
+              MetadataService.set(
+                UserModel,
+                userId,
+                "fullName",
+                `${firstName} ${lastName}`
+              );
             }
             if ((!firstName || !lastName) && user.metadata.fullName) {
-              delete user.metadata.fullName;
+              MetadataService.unset(UserModel, userId, 'fullName');
             }
 
             if (!hasLocalProfile(user.profiles)) {
