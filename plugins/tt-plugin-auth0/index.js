@@ -1,4 +1,6 @@
 const Users = require("services/users");
+const UserModel = require("models/user");
+const MetadataService = require("services/metadata");
 const { get } = require("lodash");
 
 module.exports = {
@@ -36,7 +38,7 @@ module.exports = {
       );
 
       if (firstName && lastName) {
-        user.metadata.fullName = `${firstName} ${lastName}`;
+        MetadataService.set(UserModel, userId, 'fullName', `${firstName} ${lastName}`);
       }
       user.role = isStaff ? "STAFF" : "COMMENTER";
       user.profiles.push({
