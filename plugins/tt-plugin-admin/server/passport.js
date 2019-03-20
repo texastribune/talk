@@ -46,7 +46,7 @@ module.exports = passport => {
 
             const userId = profile._json.sub;
             const username = profile._json.nickname;
-            const firstName = profile._json.given_name;
+            const firstName = profile._json.given_namez;
             const lastName = profile._json.family_name;
             const email = profile._json.email.toLowerCase();
             const isStaff = profile._json["https://texastribune.org/is_staff"];
