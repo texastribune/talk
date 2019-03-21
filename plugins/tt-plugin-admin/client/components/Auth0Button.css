@@ -1,0 +1,21 @@
+.button {
+  background-color: #ffc200;
+  border-color: #ffc200;
+  color: rgb(255, 255, 255);
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 20px;
+}
+
+.button:hover {
+  background-color: #ffc200;
+  border-color: #ffc200;
+}
+
+/* hide username + password fields */
+:global(.talk-admin-login-sign-in > form) {
+  display: none;
+}
+:global(.talk-admin-login-sign-in h5) {
+  display: none;
+}

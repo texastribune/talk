@@ -23,9 +23,9 @@ test/e2e/bslocal.log
 test/e2e/selenium-debug.log
 browserstack.err
 
-plugins.json
-
 plugins/*
+!plugins/tt-plugin-auth0
+!plugins/tt-plugin-admin
 !plugins/talk-plugin-akismet
 !plugins/talk-plugin-auth
 !plugins/talk-plugin-author-menu
