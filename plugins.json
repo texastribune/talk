@@ -1,0 +1,20 @@
+{
+  "server": [
+    "tt-plugin-auth0",
+    "talk-plugin-featured-comments",
+    "talk-plugin-profile-data"
+  ],
+  "client": [
+    "talk-plugin-author-menu",
+    "talk-plugin-featured-comments",
+    "talk-plugin-flag-details",
+    "talk-plugin-ignore-user",
+    "talk-plugin-member-since",
+    "talk-plugin-moderation-actions",
+    "talk-plugin-profile-data",
+    "talk-plugin-sort-most-replied",
+    "talk-plugin-sort-newest",
+    "talk-plugin-sort-oldest",
+    "talk-plugin-viewing-options"
+  ]
+}
