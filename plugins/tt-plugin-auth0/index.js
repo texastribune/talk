@@ -11,6 +11,12 @@ module.exports = {
         if (fullName) return fullName;
         return get(user, "metadata.displayName", get(user, "username"));
       }
+    },
+
+    Asset: {
+      title(asset) {
+        return get(asset, "url");
+      }
     }
   },
 
@@ -38,7 +44,12 @@ module.exports = {
       );
 
       if (firstName && lastName) {
-        MetadataService.set(UserModel, userId, 'fullName', `${firstName} ${lastName}`);
+        MetadataService.set(
+          UserModel,
+          userId,
+          "fullName",
+          `${firstName} ${lastName}`
+        );
       }
       user.role = isStaff ? "STAFF" : "COMMENTER";
       user.profiles.push({
